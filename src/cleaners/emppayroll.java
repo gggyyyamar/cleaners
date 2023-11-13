@@ -215,39 +215,55 @@ public class emppayroll {
 		JButton btnPrcss = new JButton("Process It");
 		btnPrcss.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				double sal,mon1,tue1,wed1,thu1,fri1,sat1,sun1,mon2,tue2,wed2,thu2,fri2,sat2,sun2,regu,ovr,rA,oA,netTotal;
-				String emplname;
-				emplname=textFieldEmpNme.getText();
-				sal=Double.parseDouble(textFieldHrsSal.getText());
-				mon1=Double.parseDouble(textFieldFM.getText());
-				tue1=Double.parseDouble(textFieldFT.getText());
-				wed1=Double.parseDouble(textFieldFW.getText());
-				thu1=Double.parseDouble(textFieldFTH.getText());
-				fri1=Double.parseDouble(textFieldFF.getText());
-				sat1=Double.parseDouble(textFieldFS.getText());
-				sun1=Double.parseDouble(textFieldFSU.getText());
-				mon2=Double.parseDouble(textFieldSM.getText());
-				tue2=Double.parseDouble(textFieldST.getText());
-				wed2=Double.parseDouble(textFieldSW.getText());
-				thu2=Double.parseDouble(textFieldSTH.getText());
-				fri2=Double.parseDouble(textFieldSF.getText());
-				sat2=Double.parseDouble(textFieldSS.getText());
-				sun2=Double.parseDouble(textFieldSSU.getText());
-				regu=mon1+tue1+wed1+thu1+fri1+sat1+sun1+32+fri2+sat2+sun2;
-				textFieldRegH.setText(String.valueOf(regu));
-				ovr=(mon2-8)+(tue2-8)+(wed2-8)+(thu2-8);
-				textFieldOverH.setText(String.valueOf(ovr));
-				rA=regu*sal;
-				textFieldRegA.setText(String.valueOf(rA));
-				oA=ovr*27.78;
+				String employeeName;
+				employeeName=textFieldEmpNme.getText();
+				double [][]hoursWorked = new double [2][7];
+				double hourlySalary, rHours = 0 ,oHours = 0,rAmount,oAmount,netPay;
 				DecimalFormat df = new DecimalFormat("#.##");
-				oA=Double.parseDouble(df.format(oA));
-				textFieldOverA.setText(String.valueOf(oA));
-				netTotal=rA+oA;
-				textFieldNet.setText(String.valueOf(netTotal));
+				hoursWorked[0][0] = Double.parseDouble(textFieldFM.getText());
+				hoursWorked[0][1] = Double.parseDouble(textFieldFT.getText());
+				hoursWorked[0][2] = Double.parseDouble(textFieldFW.getText());
+				hoursWorked[0][3] = Double.parseDouble(textFieldFTH.getText());
+				hoursWorked[0][4] = Double.parseDouble(textFieldFF.getText());
+				hoursWorked[0][5] = Double.parseDouble(textFieldFS.getText());
+				hoursWorked[0][6] = Double.parseDouble(textFieldFSU.getText());
+				hoursWorked[1][0] = Double.parseDouble(textFieldSM.getText());
+				hoursWorked[1][1] = Double.parseDouble(textFieldST.getText());
+				hoursWorked[1][2] = Double.parseDouble(textFieldSW.getText());
+				hoursWorked[1][3] = Double.parseDouble(textFieldSTH.getText());
+				hoursWorked[1][4] = Double.parseDouble(textFieldSF.getText());
+				hoursWorked[1][5] = Double.parseDouble(textFieldSS.getText());
+				hoursWorked[1][6] = Double.parseDouble(textFieldSSU.getText());
+				hourlySalary=Double.parseDouble(textFieldHrsSal.getText());
+
+				
+			    for (int i = 0; i < hoursWorked.length; ++i) {
+			        for(int j = 0; j < hoursWorked[i].length; ++j) {
+			        	if(hoursWorked[i][j]>8) {
+			        		double hours = hoursWorked[i][j]-8;
+			        		oHours += hours;
+			        	}
+			        }
+			      }
+				textFieldOverH.setText(String.valueOf(oHours));
+				for(int i= 0; i < hoursWorked.length; ++i) {
+					for (int j = 0; j < hoursWorked[i].length; ++j) {
+						rHours += hoursWorked[i][j];
+					}
+				}
+				rHours -= oHours;
+				textFieldRegH.setText(String.valueOf(rHours));
+				rAmount=rHours*hourlySalary;
+				textFieldRegA.setText(String.valueOf(rAmount));
+				oAmount=oHours*27.78;
+				oAmount=Double.parseDouble(df.format(oAmount));
+				textFieldOverA.setText(String.valueOf(oAmount));
+				netPay=rAmount + oAmount;
+				textFieldNet.setText(String.valueOf(netPay));
+			}
 				
 			}
-		});
+				);
 		btnPrcss.setBounds(22, 47, 104, 63);
 		panel_2.add(btnPrcss);
 		
